@@ -4,9 +4,25 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/akashshahriar/AndroidStudioProjects/AndroidTemplate/KeyStore/DevelopmentKeystoreDebug')
+            storePassword 'dev1234'
+            keyAlias 'develop'
+            keyPassword 'dev1234'
+        }
+
+        release {
+            storeFile file('/Users/akashshahriar/AndroidStudioProjects/AndroidTemplate/KeyStore/DevelopmentKeystoreRelease')
+            storePassword 'dev1234'
+            keyAlias 'develop'
+            keyPassword 'dev1234'
+        }
+    }
     compileSdk 31
 
     defaultConfig {
+        manifestPlaceholders = [hostName:"www.example.com"]
         applicationId "com.cookietech.androidtemplet"
         minSdk 21
         targetSdk 31
@@ -14,14 +30,71 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
+        minSdkVersion 21
+        targetSdkVersion 31
+
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+
+            // Enables resource shrinking, which is performed by the
+            // Android Gradle plugin.
+            shrinkResources true
+
+            // Enables code shrinking, obfuscation, and optimization for only
+            // your project's release build type.
+            minifyEnabled true
+
+
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [appName: "Template app"]
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            signingConfig signingConfigs.debug
+
+            manifestPlaceholders = [appName: "Template app debug"]
+        }
+
+        /**
+         * The `initWith` property allows you to copy configurations from other build types,
+         * then configure only the settings you want to change. This one copies the debug build
+         * type, and then changes the manifest placeholder and application ID.
+         */
+        staging {
+            initWith debug
+            manifestPlaceholders = [hostName:"internal.example.com"]
+            applicationIdSuffix ".debugStaging"
+        }
+
+    }
+
+    // Specifies one flavor dimension.
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            // Assigns this product flavor to the "version" flavor dimension.
+            // If you are using only one dimension, this property is optional,
+            // and the plugin automatically assigns all the module's flavors to
+            // that dimension.
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        full {
+            dimension "version"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,6 +105,9 @@ android {
 }
 
 dependencies {
+
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
