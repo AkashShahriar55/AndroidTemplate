@@ -6,14 +6,14 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('/Users/akashshahriar/AndroidStudioProjects/AndroidTemplate/KeyStore/DevelopmentKeystoreDebug')
+            storeFile file('/Users/akash/StudioProjects/AndroidTemplate/KeyStore/DevelopmentKeystoreDebug')
             storePassword 'dev1234'
             keyAlias 'develop'
             keyPassword 'dev1234'
         }
 
         release {
-            storeFile file('/Users/akashshahriar/AndroidStudioProjects/AndroidTemplate/KeyStore/DevelopmentKeystoreRelease')
+            storeFile file('/Users/akash/StudioProjects/AndroidTemplate/KeyStore/DevelopmentKeystoreRelease')
             storePassword 'dev1234'
             keyAlias 'develop'
             keyPassword 'dev1234'
